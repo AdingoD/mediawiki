@@ -18,6 +18,7 @@ from .exceptions import (
     MediaWikiLoginError,
 )
 from .mediawikipage import MediaWikiPage
+from .mediawikifile import MediaWikiFile
 from .utilities import memoize
 
 URL = "https://github.com/barrust/mediawiki"
@@ -838,6 +839,35 @@ class MediaWiki(object):
                 title = temp_title
             return MediaWikiPage(self, title, redirect=redirect, preload=preload)
         return MediaWikiPage(self, pageid=pageid, preload=preload)
+    def file(
+        self, title=None, pageid=None, auto_suggest=True, redirect=True, preload=False
+    ):
+        """ Get MediaWiki file based on the provided title or pageid
+
+            Args:
+                title (str): File name (without leading File: namespace, so 'File:file.txt' becomes 'file.txt')
+                pageid (int): MediaWiki page identifier
+                auto-suggest (bool): **True:** Allow page title auto-suggest
+                redirect (bool): **True:** Follow page redirects
+                preload (bool): **True:** Load most page properties
+            Raises:
+                ValueError: when title is blank or None and no pageid is \
+                            provided
+            Raises:
+                :py:func:`mediawiki.exceptions.PageError`: if page does \
+                not exist
+            Note:
+                Title takes precedence over pageid if both are provided """
+        if (title is None or title.strip() == "") and pageid is None:
+            raise ValueError("Either a title or a pageid must be specified")
+        if title:
+            if auto_suggest:
+                temp_title = self.suggest(title)
+                if temp_title is None:  # page doesn't exist
+                    raise PageError(title=title)
+                title = temp_title
+            return MediaWikiFile(self, title, redirect=redirect, preload=preload)
+        return MediaWikiFile(self, pageid=pageid, preload=preload)
 
     def wiki_request(self, params):
         """ Make a request to the MediaWiki API using the given search
