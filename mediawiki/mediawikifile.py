@@ -2,8 +2,8 @@
 MediaWikiFile class module
 """
 
-
 from .mediawikipage import MediaWikiPage
+
 
 class MediaWikiFile(MediaWikiPage):
     """ MediaWiki File Instance, inheriting from the MediaWiki Page class
@@ -54,4 +54,3 @@ class MediaWikiFile(MediaWikiPage):
             raw_data = self.mediawiki.wiki_request(params=params)
             self._file_url = raw_data["query"]["pages"][self.pageid]["imageinfo"][0]["url"]
         return self._file_url
-        
