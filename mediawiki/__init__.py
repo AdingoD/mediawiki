@@ -3,6 +3,7 @@ mediawiki module initialization
 """
 from .mediawiki import MediaWiki, URL, VERSION
 from .mediawikipage import MediaWikiPage
+from .mediawikifile import MediaWikiFile
 from .exceptions import (
     MediaWikiException,
     PageError,
@@ -27,6 +28,7 @@ __bugtrack_url__ = "{0}/issues".format(URL)
 __all__ = [
     "MediaWiki",
     "MediaWikiPage",
+    "MediaWikiFile",
     "PageError",
     "RedirectError",
     "MediaWikiException",
