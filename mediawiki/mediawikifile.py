@@ -35,7 +35,7 @@ class MediaWikiFile(MediaWikiPage):
     ]
 
     def __init__(self, mediawiki, title=None, pageid=None, redirect=True, preload=False, original_title=""):
-        super().__init__(mediawiki=mediawiki, title="File:{}".format(title),
+        super().__init__(mediawiki=mediawiki, title=title,
                          pageid=pageid, redirect=redirect, preload=preload, original_title=original_title)
         self._file_url = None
 
