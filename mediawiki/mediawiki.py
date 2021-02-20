@@ -839,13 +839,14 @@ class MediaWiki(object):
                 title = temp_title
             return MediaWikiPage(self, title, redirect=redirect, preload=preload)
         return MediaWikiPage(self, pageid=pageid, preload=preload)
+
     def file(
         self, title=None, pageid=None, auto_suggest=True, redirect=True, preload=False
     ):
         """ Get MediaWiki file based on the provided title or pageid
 
             Args:
-                title (str): File name (without leading File: namespace, so 'File:file.txt' becomes 'file.txt')
+                title (str): File name (without leading File: namespace, so 'File:file.txt' should be supplied as 'file.txt')
                 pageid (int): MediaWiki page identifier
                 auto-suggest (bool): **True:** Allow page title auto-suggest
                 redirect (bool): **True:** Follow page redirects
@@ -862,9 +863,9 @@ class MediaWiki(object):
             raise ValueError("Either a title or a pageid must be specified")
         if title:
             if auto_suggest:
-                temp_title = self.suggest(title)
-                if temp_title is None:  # page doesn't exist
-                    raise PageError(title=title)
+                temp_title = self.suggest("File:{}".format(title))
+                if temp_title is None:  # file doesn't exist
+                    raise PageError(title="File:{}".format(title))
                 title = temp_title
             return MediaWikiFile(self, title, redirect=redirect, preload=preload)
         return MediaWikiFile(self, pageid=pageid, preload=preload)
